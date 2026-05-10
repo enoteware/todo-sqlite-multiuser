@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Primer Executive Tasks</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">SQLite • multi-user • Primer-inspired</p>
+      <h1>Tasks with executive polish.</h1>
+      <p class="lede">A practical todo app with private accounts, scoped data, and a high-end interface translated from a DESIGN.md spec.</p>
+    </section>
+
+    {% if user %}
+    <section class="dashboard card">
+      <div class="dashboard-head">
+        <div>
+          <p class="eyebrow">Signed in</p>
+          <h2>{{ user.email }}</h2>
+        </div>
+        <a class="ghost" href="/logout">Log out</a>
+      </div>
+      <form class="todo-form" method="post" action="/todos">
+        <input name="title" placeholder="Add a focused next action…" maxlength="180" required autofocus>
+        <button type="submit">Add task</button>
+      </form>
+      <div class="todo-list">
+        {% if todos %}
+          {% for todo in todos %}
+          <article class="todo {% if todo.completed %}done{% endif %}">
+            <form method="post" action="/todos/{{ todo.id }}/toggle">
+              <button class="check" aria-label="Toggle task">{% if todo.completed %}✓{% endif %}</button>
+            </form>
+            <div class="todo-copy">
+              <strong>{{ todo.title }}</strong>
+              <span>{{ todo.created_at }}</span>
+            </div>
+            <form method="post" action="/todos/{{ todo.id }}/delete">
+              <button class="delete" aria-label="Delete task">Delete</button>
+            </form>
+          </article>
+          {% endfor %}
+        {% else %}
+          <div class="empty">No tasks yet. Add one clean next action above.</div>
+        {% endif %}
+      </div>
+    </section>
+    {% else %}
+    <section class="auth-grid">
+      <form class="card auth" method="post" action="/register">
+        <p class="eyebrow">New workspace</p>
+        <h2>Create account</h2>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <label>Email<input name="email" type="email" placeholder="ada@example.com" required></label>
+        <label>Password<input name="password" type="password" minlength="8" placeholder="8+ characters" required></label>
+        <button type="submit">Create private task space</button>
+      </form>
+      <form class="card auth secondary" method="post" action="/login">
+        <p class="eyebrow">Returning</p>
+        <h2>Log in</h2>
+        <label>Email<input name="email" type="email" placeholder="ada@example.com" required></label>
+        <label>Password<input name="password" type="password" required></label>
+        <button type="submit">Open dashboard</button>
+      </form>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

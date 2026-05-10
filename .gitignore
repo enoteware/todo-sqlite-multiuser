@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.sqlite3
+.env
+.pytest_cache/
+.coverage
+.DS_Store
+
+todo_sqlite_multiuser.egg-info/
+*.egg-info/

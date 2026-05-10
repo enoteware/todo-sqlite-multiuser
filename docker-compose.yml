@@ -1,0 +1,13 @@
+services:
+  todo:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      TODO_SECRET_KEY: "change-me-in-production"
+      TODO_DB_PATH: "/data/todo.sqlite3"
+    volumes:
+      - todo_data:/data
+
+volumes:
+  todo_data:
